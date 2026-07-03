@@ -1,16 +1,53 @@
-# React + Vite
+## 💻 1. Local System Installation Setup
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Follow these exact steps to pull the repository and spin up your local environment:
 
-Currently, two official plugins are available:
+### 1. Clone the project from our repository destination
+```bash
+git clone https://github.com/FaroukZakaria/SEF_ACADEMY-Internship_G5
+```
+### 2. Navigate inside the React project workspace folder
+```bash
+cd my-react-app
+```
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+### 3. Download and install team packages (React Router, etc.)
+```bash
+npm install
+```
 
-## React Compiler
+### 4. Launch your local high-speed Vite development server
+```bash
+npm run dev
+```
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🎨 2. Global Amazon Theme Utility Tokens
 
-## Expanding the ESLint configuration
+We are using **Tailwind CSS v4** design configurations. Do not hardcode custom hex colors in your components. Instead, apply these standardized brand tokens using standard Tailwind prefixes (`bg-`, `text-`, `border-`):
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+*   `bg-amazon-navy` / `text-amazon-navy` (`#131921`) — Primary headers and dark backgrounds
+*   `bg-amazon-lightNavy` (`#232f3e`) — Secondary navbars, sidebars, and sub-menus
+*   `bg-amazon-orange` / `hover:bg-amazon-orangeHover` (`#ff9900` / `#e68a00`) — Call-to-actions, buttons, and active markers
+*   `bg-amazon-bg` (`#eaeded`) — Primary page canvas backdrop
+*   `bg-amazon-surface` (`#ffffff`) — Content boxes, data cards, list elements, and login panels
+*   `border-amazon-border` (`#d5dbdb`) — Layout division lines and column borders
+*   `text-amazon-textDark` (`#0f1111`) — Core bold body typography and metrics numbers
+*   `text-amazon-textLight` (`#565959`) — Secondary muted text, labels, and metadata timestamps
+
+---
+
+## 🔀 3. Git Coordination Workflow (No Merge Conflicts!)
+
+To ensure your code integrates smoothly with the rest of the team without breaking anything, follow these 3 basic Git safety commands:
+
+1.  **Never code on the `main` branch**. Create your own feature branch before coding:
+    ```bash
+    git checkout -b feature/your-assigned-task
+    ```
+2.  Commit your updates to your branch and push it to GitHub:
+    ```bash
+    git add .
+    git commit -m "feat: explain what you completed in your task"
+    git push origin feature/your-assigned-task
+    ```
+3.  Go to the GitHub repository page in your browser and click **"New Pull Request"** to merge your branch into `main`. The team lead will review it and merge it instantly!
