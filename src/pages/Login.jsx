@@ -1,0 +1,1 @@
+import React from 'react'; export default function Login() { return <div className='min-h-screen bg-amazon-bg flex items-center justify-center font-black text-xl text-amazon-textDark'>Sign-In Screen Container</div>; }

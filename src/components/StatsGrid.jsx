@@ -1,0 +1,1 @@
+import React from 'react'; export default function StatsGrid() { return <div className='p-6 bg-amazon-surface border border-amazon-border rounded-xl shadow-sm text-amazon-textDark font-bold'>[Week 1 Deliverable: Revenue | Orders | Customers]</div>; }
