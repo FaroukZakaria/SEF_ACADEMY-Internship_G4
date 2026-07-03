@@ -7,13 +7,19 @@ Follow these exact steps to pull the repository and spin up your local environme
 git clone https://github.com/FaroukZakaria/SEF_ACADEMY-Internship_G5
 ```
 ### 2. Navigate inside the React project workspace folder
+```bash
 cd my-react-app
+```
 
 ### 3. Download and install team packages (React Router, etc.)
+```bash
 npm install
+```
 
 ### 4. Launch your local high-speed Vite development server
+```bash
 npm run dev
+```
 
 ## 🎨 2. Global Amazon Theme Utility Tokens
 
