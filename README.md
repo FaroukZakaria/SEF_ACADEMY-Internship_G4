@@ -2,8 +2,8 @@
 
 Follow these exact steps to pull the repository and spin up your local environment:
 
+### 1. Clone the project from our repository destination
 ```bash
-# 1. Clone the project from our repository destination
 git clone https://github.com/FaroukZakaria/SEF_ACADEMY-Internship_G5
 ```
 ### 2. Navigate inside the React project workspace folder
