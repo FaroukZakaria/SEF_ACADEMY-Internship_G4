@@ -73,18 +73,24 @@ export default function StatsGrid() {
   }, []);
   const CardsLoop = [
     {
+      formColor: "from-orange-500",
+      toColor: "to-red-500",
       title: "total orders",
       value: dashboard?.orders?.total,
       info: "All orders received",
       icon: <LuShoppingBag size={24} className="text-white" />,
     },
     {
+      formColor: "from-blue-500",
+      toColor: "to-cyan-400",
       title: "pending orders",
       value: dashboard?.orders?.pending,
       info: "Awaiting action",
       icon: <GoClock size={24} className="text-white" />,
     },
     {
+      formColor: "from-green-500",
+      toColor: "to-emerald-400",
       title: "revenue",
       // Don't use:
       // dashboard?.revenue?.total?.toFixed(2) || 0.00
@@ -96,18 +102,24 @@ export default function StatsGrid() {
       icon: <MdOutlineAttachMoney size={24} className="text-white" />,
     },
     {
+      formColor: "from-emerald-500",
+      toColor: " to-teal-400",
       title: "this month",
       value: `$${salesOfMonth.toFixed(2)}`,
       info: "Monthly sales target",
       icon: <IoCartOutline size={24} className="text-white" />,
     },
     {
+      formColor: "from-violet-500",
+      toColor: "to-fuchsia-500",
       title: "top product",
       value: dashboard?.topProducts?.[0]?.name,
       info: `${dashboard?.topProducts?.length} sold`,
       icon: <BsBoxSeam size={24} className="text-white" />,
     },
     {
+      formColor: "from-amber-500",
+      toColor: "to-orange-400",
       title: "users",
       value: customers,
       info: "All orders received",
@@ -133,7 +145,9 @@ export default function StatsGrid() {
             key={index}
             className="relative w-full overflow-hidden rounded-[28px] border border-amazon-border bg-amazon-surface p-5 transition-all duration-300 hover:-translate-y-3 hover:shadow"
           >
-            <div className="absolute left-0 top-0 h-1 w-full bg-linear-to-br from-amazon-orange to-amazon-yellow" />
+            <div
+              className={`absolute left-0 top-0 h-1 w-full bg-linear-to-br ${card.formColor} ${card.toColor}`}
+            />
             <div className="flex items-start justify-between">
               <div>
                 <h3 className="text-md font-medium capitalize text-amazon-textLight/60">
@@ -146,7 +160,9 @@ export default function StatsGrid() {
                   {card.info}
                 </p>
               </div>
-              <div className="flex h-14 w-14 items-center justify-center rounded-3xl bg-linear-to-br from-amazon-orange to-amazon-yellow transition-all duration-300 hover:rotate-12 hover:shadow hover:scale-110">
+              <div
+                className={`flex h-14 w-14 items-center justify-center rounded-3xl bg-linear-to-br ${card.formColor} ${card.toColor} transition-all duration-300 hover:rotate-12 hover:shadow hover:scale-110`}
+              >
                 {card.icon}
               </div>
             </div>
