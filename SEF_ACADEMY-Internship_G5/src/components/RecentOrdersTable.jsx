@@ -1,0 +1,1 @@
+import React from 'react'; export default function RecentOrdersTable() { return <div className='p-6 bg-amazon-surface border border-amazon-border rounded-xl shadow-sm text-amazon-textDark text-xs font-semibold'>Recent Operations Table Log</div>; }
