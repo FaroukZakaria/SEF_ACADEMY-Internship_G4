@@ -5,7 +5,7 @@ import OrderStatusCard from '../components/OrderStatusCard';
 import TopProductsCard from '../components/TopProductsCard';
 import DashboardLayout from '../components/DashboardLayout';
 
-export default function DashboardPage() {
+export default function DashboardView() {
     return (
 
         <DashboardLayout>
