@@ -1,1 +1,31 @@
-import React from 'react'; import StatsGrid from '../components/StatsGrid'; import RecentOrdersTable from '../components/RecentOrdersTable'; export default function DashboardView() { return <div className='space-y-6'><div><h1 className='text-2xl font-bold text-amazon-textDark'>Dashboard Home</h1><p className='text-xs text-amazon-textLight mt-0.5'>Live workspace overview</p></div><StatsGrid /><RecentOrdersTable /></div>; }
+
+import StatsGrid from '../components/StatsGrid'
+import RecentOrdersTable from '../components/RecentOrdersTable';
+import OrderStatusCard from '../components/OrderStatusCard';
+import TopProductsCard from '../components/TopProductsCard';
+import DashboardLayout from '../components/DashboardLayout';
+
+export default function DashboardView() {
+    return (
+
+        <DashboardLayout>
+            <div className='flex flex-col gap-6'>
+
+                <div className="space-y-6">
+                    <StatsGrid />
+                </div>
+
+                <div className=" grid grid-cols-1 md:grid-cols-2">
+                    <OrderStatusCard />
+                    <TopProductsCard />
+                </div>
+
+t
+                <div>
+                    <RecentOrdersTable />
+                </div>
+                
+            </div>
+        </DashboardLayout>
+    );
+}
