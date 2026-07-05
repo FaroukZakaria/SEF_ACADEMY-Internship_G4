@@ -19,9 +19,11 @@ export default function DashboardView() {
                     <OrderStatusCard />
                     <TopProductsCard />
                 </div>
+
                 <div>
                     <RecentOrdersTable />
                 </div>
+                
             </div>
         </DashboardLayout>
     );
