@@ -51,8 +51,7 @@ export default function RecentOrders() {
 
        {orders.slice(0,5).map((order, index) => {
         const style = STATUS_COLORS[order.status];
-        const rowBg = index % 2 === 0 ? "bg-amazon-bg border border-amazon-orange" : "bg-amazon-surface border border-amazon-yellow";
-          console.log(order.user?.username)
+        const rowBg = index % 2 === 0 ? "bg-amazon-bg border border-amazon-orange" : "bg-amazon-surface border border-amazon-yellow"
         return (
           <div
             key={order._id}
