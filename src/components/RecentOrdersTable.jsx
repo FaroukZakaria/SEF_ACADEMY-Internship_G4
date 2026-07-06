@@ -1,52 +1,14 @@
 import { useEffect, useState } from "react";
 import api from "../api/axios.js"
 
-// const FAKE_ORDERS = [
-//   {
-//     _id: "1",
-//     shippingAddress: { fullName: "ssw33333" },
-//     items: [{ name: "iPhone 16 Pro Max" }],
-//     status: "confirmed",
-//     totalPrice: 2164.86,
-//   },
-//   {
-//     _id: "2",
-//     shippingAddress: { fullName: "Customer" },
-//     items: [{ name: "LG Smart TV" }],
-//     status: "processing",
-//     totalPrice: 11172.0,
-//   },
-//   {
-//     _id: "3",
-//     shippingAddress: { fullName: "Hazem" },
-//     items: [{ name: "iPhone 15 Pro Max" }],
-//     status: "processing",
-//     totalPrice: 1368.0,
-//   },
-//   {
-//     _id: "4",
-//     shippingAddress: { fullName: "customer account" },
-//     items: [{ name: "Levi's Mens Jeans" }],
-//     status: "cancelled",
-//     totalPrice: 1480.86,
-//   },
-//   {
-//     _id: "5",
-//     shippingAddress: { fullName: "Customer" },
-//     items: [{ name: "iPhone 15 Pro Max" }],
-//     status: "confirmed",
-//     totalPrice: 1368.0,
-//   },
-// ];
-
 const STATUS_COLORS = {
-  confirmed: "text-green-300",
-  processing: "text-cyan-300",
-  cancelled: "text-red-400",
-  pending: "text-yellow-400",
-  delivered: "text-green-500",
-  shipped: "text-blue-300",
-  returned: "text-orange-300"
+  confirmed:  { text: "text-green-300"},
+  delivered:  { text: "text-green-500"},
+  processing: { text: "text-cyan-300"},
+  shipped:    { text: "text-blue-300"},
+  pending:    { text: "text-yellow-400"},
+  cancelled:  { text: "text-red-400"},
+  returned:   { text: "text-orange-300"},
 };
 
 function formatMoney(amount) {
@@ -57,15 +19,12 @@ function formatMoney(amount) {
 }
 
 export default function RecentOrders() {
-  // const [orders] = useState(FAKE_ORDERS);
-  // const [error] = useState(null);
-
   const [orders, setOrders] = useState([]);
 
   useEffect(() => {
     const getOrders = async () => {
       try {
-        const { data } = await api.get("https://e-commerce-api-3wara.vercel.app/orders/admin");
+        const { data } = await api.get("https://e-commerce-api-3wara.vercel.app/orders/admin?limit=5");
         setOrders(data.orders || []);
       } catch (error) {
         console.log(error);
@@ -84,38 +43,42 @@ export default function RecentOrders() {
           <h1 className="text-amazon-textDark text-2xl font-bold">Latest customer activity</h1>
         </div>
         <div className="flex items-center justify-center">
-          <span className="bg-amazon-navy text-white px-3 py-1 rounded-3xl whitespace-nowrap">
-            {orders.length} orders
+          <span className="bg-amazon-lightNavy text-white px-4 py-1.5 rounded-3xl font-semibold whitespace-nowrap">
+            Orders: {orders.length}
           </span>
         </div>
       </div>
 
-      {orders.map((order) => (
-        <div
-          key={order._id}
-          className="flex justify-between items-center bg-amazon-bg border border-amazon-border rounded-3xl p-4 mb-3"
-        >
-          <div>
-            <p className="text-amazon-textDark font-semibold">
-              {order.shippingAddress?.fullName}
-            </p>
-            <p className="text-amazon-textLight text-sm">
-              {order.items?.[0]?.name}
-            </p>
-          </div>
+       {orders.slice(0,5).map((order, index) => {
+        const style = STATUS_COLORS[order.status];
+        const rowBg = index % 2 === 0 ? "bg-amazon-bg border border-amazon-orange" : "bg-amazon-surface border border-amazon-yellow";
+          console.log(order.user?.username)
+        return (
+          <div
+            key={order._id}
+            className={`flex justify-between items-center ${rowBg} border-l-4 rounded-3xl p-4 mb-3 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5`}
+          >
+            <div>
+              <p className="text-amazon-textDark font-semibold">
+                {order.user?.username || "Customer"}
+              </p>
+              <p className="text-amazon-textLight text-sm">
+                {order.items?.[0]?.name} • {new Date(order.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
+              </p>
+            </div>
 
-          <div className="text-right flex justify-between items-center gap-3">
-            <p
-              className={`bg-amazon-lightNavy px-3 py-1.5 rounded-2xl text-xs 
-                ${STATUS_COLORS[order.status] }`
-              }
-            >
-              {order.status.toUpperCase()}
-            </p>
-            <p className="text-amazon-textDark font-semibold">{formatMoney(order.totalPrice)}</p>
+            <div className="flex justify-between items-center">
+                <p
+                  className={`bg-amazon-lightNavy ${STATUS_COLORS[order.status].text} text-amazon-lightNavy w-24 text-center px-3 py-1.5 rounded-2xl text-xs font-bold`}
+                >
+                  {order.status.toUpperCase()}
+                </p>
+                <p className="text-amazon-textDark font-semibold w-24 text-right">{formatMoney(order.totalPrice)}</p>
+            </div>
           </div>
-        </div>
-      ))}
+        );
+      })}
+
     </div>
   );
 }
