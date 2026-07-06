@@ -3,29 +3,27 @@ import StatsGrid from '../components/StatsGrid'
 import RecentOrdersTable from '../components/RecentOrdersTable';
 import OrderStatusCard from '../components/OrderStatusCard';
 import TopProductsCard from '../components/TopProductsCard';
-import DashboardLayout from '../components/DashboardLayout';
+
 
 export default function DashboardView() {
     return (
+        
+            <div className='flex flex-col gap-6 p-4 lg:p-8 w-full h-auto'>
 
-        <DashboardLayout>
-            <div className='flex flex-col gap-6'>
-
-                <div className="space-y-6">
+                <div className="space-y-6 w-full h-auto">
                     <StatsGrid />
                 </div>
 
-                <div className=" grid grid-cols-1 md:grid-cols-2">
+                <div className=" grid gap-4 xl:grid-cols-[1.1fr_0.9fr] w-full h-auto">
                     <OrderStatusCard />
                     <TopProductsCard />
                 </div>
 
-t
-                <div>
+
+                <div className='w-full h-auto'>
                     <RecentOrdersTable />
                 </div>
                 
-            </div>
-        </DashboardLayout>
+            </div>        
     );
 }
