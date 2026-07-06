@@ -16,8 +16,8 @@ export default function ProtectedRoute({ children }) {
     if(role !== "admin"){
         return (
         <div className="min-h-screen bg-amazon-bg flex justify-center items-start pt-8 px-4">
-            <div className="w-full max-w-5xl rounded-full border border-amazon-border bg-amazon-surface px-6 py-4">
-                <p className="text-amazon-textDark  font-medium">Access denied. Admin only.</p>
+            <div className="w-full max-w-5xl rounded-full border border-red-300 bg-red-50 px-6 py-4">
+                <p className="text-red-700 font-medium">Access denied. Admin only.</p>
             </div>
     
         </div>
