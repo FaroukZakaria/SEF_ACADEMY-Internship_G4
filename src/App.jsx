@@ -2,12 +2,12 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
 import Login from './pages/Login';
 import DashboardView from './pages/DashboardView';
-import Users from './pages/Users';
-import Products from './pages/Products';
-import AddProduct from './pages/AddProduct';
-import Orders from './pages/Orders';
-import Cart from './pages/Cart';
-import Settings from './pages/Settings';
+// import Users from './pages/Users';
+// import Products from './pages/Products';
+// import AddProduct from './pages/AddProduct';
+// import Orders from './pages/Orders';
+// import Cart from './pages/Cart';
+// import Settings from './pages/Settings';
 
 import DashboardLayout from './components/DashboardLayout';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -34,7 +34,7 @@ function App() {
           element={
             <ProtectedRoute>
               <DashboardLayout>
-                <Users />
+                {/* <Users /> */}
               </DashboardLayout>
             </ProtectedRoute>
           }
@@ -45,7 +45,7 @@ function App() {
           element={
             <ProtectedRoute>
               <DashboardLayout>
-                <Products />
+                {/* <Products /> */}
               </DashboardLayout>
             </ProtectedRoute>
           }
@@ -56,7 +56,7 @@ function App() {
           element={
             <ProtectedRoute>
               <DashboardLayout>
-                <AddProduct />
+                {/* <AddProduct /> */}
               </DashboardLayout>
             </ProtectedRoute>
           }
@@ -69,7 +69,7 @@ function App() {
           element={
             <ProtectedRoute>
               <DashboardLayout>
-                <Orders />
+                {/* <Orders /> */}
               </DashboardLayout>
             </ProtectedRoute>
           }
@@ -82,7 +82,7 @@ function App() {
           element={
             <ProtectedRoute>
               <DashboardLayout>
-                <Cart />
+                {/* <Cart /> */}
               </DashboardLayout>
             </ProtectedRoute>
           }
@@ -93,7 +93,7 @@ function App() {
           element={
             <ProtectedRoute>
               <DashboardLayout>
-                <Settings />
+                {/* <Settings /> */}
               </DashboardLayout>
             </ProtectedRoute>
           }

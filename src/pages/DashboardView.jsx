@@ -1,7 +1,7 @@
 
 import StatsGrid from '../components/StatsGrid'
 import RecentOrdersTable from '../components/RecentOrdersTable';
-import OrderStatusCard from '../components/OrderStatusCard';
+// import OrderStatusCard from '../components/OrderStatusCard';
 import TopProductsCard from '../components/TopProductsCard';
 
 
@@ -15,7 +15,7 @@ export default function DashboardView() {
                 </div>
 
                 <div className=" grid gap-4 xl:grid-cols-[1.1fr_0.9fr] w-full h-auto">
-                    <OrderStatusCard />
+                    {/* <OrderStatusCard /> */}
                     <TopProductsCard />
                 </div>
 
