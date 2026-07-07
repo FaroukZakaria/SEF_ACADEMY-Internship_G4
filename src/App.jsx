@@ -8,12 +8,15 @@ import DashboardView from './pages/DashboardView';
 // import Orders from './pages/Orders';
 // import Cart from './pages/Cart';
 // import Settings from './pages/Settings';
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import DashboardLayout from './components/DashboardLayout';
 import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
   return (
+    <>
     <BrowserRouter>
       <Routes>
         <Route path="/login" element={<Login />} />
@@ -103,6 +106,8 @@ function App() {
         <Route path="*" element={<Navigate to="/dashboard" replace />} />
       </Routes>
     </BrowserRouter>
+    <ToastContainer position="top-center" autoClose={2000} theme="colored" />
+    </>
   );
 }
 
