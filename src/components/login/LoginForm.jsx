@@ -8,7 +8,7 @@ import { FcGoogle } from "react-icons/fc";
 import logo from "../../assets/logo.png";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { login } from "../../utils/authService";
+import { login, saveUser } from "../../utils/authService";
 import { useState } from "react";
 
 const LoginForm = () => {
@@ -29,8 +29,7 @@ const LoginForm = () => {
 
       const response = await login(data);
 
-      localStorage.setItem("token", response.token);
-      localStorage.setItem("user", JSON.stringify(response.user));
+      saveUser(response.token, response.user.role, response.user.name);
 
       toast.success(response.message);
 
