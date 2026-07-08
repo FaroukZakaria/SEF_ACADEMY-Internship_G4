@@ -1,1 +1,0 @@
-import React from 'react'; export default function DashboardLayout({ children }) { return <div className='flex h-screen w-screen overflow-hidden bg-amazon-bg'><aside className='hidden md:block'>[Sidebar Column]</aside><div className='flex flex-1 flex-col overflow-hidden'>[Topbar Row]<main className='flex-1 overflow-y-auto p-6'>{children}</main></div></div>; }
