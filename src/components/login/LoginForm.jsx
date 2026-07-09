@@ -29,7 +29,7 @@ const LoginForm = () => {
 
       const response = await login(data);
 
-      saveUser(response.token, response.user.role, response.user.name);
+      saveUser(response.token, response.user.role, response.user.username);
 
       toast.success(response.message);
 
