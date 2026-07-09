@@ -6,6 +6,7 @@ import DashboardView from "../pages/DashboardView";
 import LoadingSpinner from "./LoadingSpinner";
 import axios from "/src/api/axios";
 import { FaBars } from "react-icons/fa";
+import ProtectedRoute from "./ProtectedRoute";
 
 const DashboardLayout = () => {
   const [isSessionLoading, setIsSessionLoading] = useState(true);
@@ -30,15 +31,17 @@ const DashboardLayout = () => {
 
   return (
     <>
-    <div className="flex h-screen w-screen overflow-hidden bg-amazon-bg">
+    <ProtectedRoute>
+    {isSessionLoading ? <LoadingSpinner message="Loading session data..." /> :
+    <>
       <Sidebar />
       <MobileSidebar open={open} setOpen={setOpen} />
       <div className="dashboard-main lg:pl-72">
-        {/* Pass the session data directly into your Topbar */}
-        {isSessionLoading ? <LoadingSpinner message="Loading session data..." /> : <Topbar userData={userData} onMenuClick={() => setOpen(true)} />}
+       <Topbar userData={userData} onMenuClick={() => setOpen(true)} />
         <DashboardView userData={userData} />
       </div>
-    </div>
+      </>}
+    </ProtectedRoute>
     </>
   );
 };

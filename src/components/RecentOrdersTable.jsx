@@ -34,7 +34,7 @@ export default function RecentOrders() {
   }, []);
 
   return (
-    <div className="bg-amazon-surface border border-amazon-border rounded-4xl p-6 max-w-4xl mx-auto">
+    <div className="bg-amazon-surface border border-amazon-border rounded-4xl p-6 w-full mx-auto">
       <div className="flex justify-between mb-6">
         <div>
           <p className="text-amazon-orange text-s font-bold uppercase tracking-widest mb-2">

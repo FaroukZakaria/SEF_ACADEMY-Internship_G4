@@ -24,11 +24,11 @@ function App() {
         <Route
           path="/dashboard"
           element={
-            <ProtectedRoute>
-              <DashboardLayout>
+            <DashboardLayout>
+              <ProtectedRoute>
                 <DashboardView />
-              </DashboardLayout>
-            </ProtectedRoute>
+              </ProtectedRoute>
+            </DashboardLayout>
           }
         />
 

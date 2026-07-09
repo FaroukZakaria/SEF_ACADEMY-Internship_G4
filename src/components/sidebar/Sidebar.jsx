@@ -3,7 +3,7 @@ import { sidebarLinks } from "./SidebarLinks";
 
 const Sidebar = () => {
   return (
-    <aside className="hidden lg:flex w-72 flex-col border-r border-amazon-lightNavy bg-amazon-navy">
+    <aside className="hidden lg:flex w-72 h-full flex-col border-r fixed top-0 left-0 border-amazon-lightNavy bg-amazon-navy">
       <div className="border-b border-amazon-lightNavy p-6">
         <p className="text-xs tracking-[5px] text-amazon-yellow uppercase">
           COMMERCE
