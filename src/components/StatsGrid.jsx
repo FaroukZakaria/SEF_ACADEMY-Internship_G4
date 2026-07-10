@@ -126,8 +126,8 @@ export default function StatsGrid() {
             <div
               className={`absolute left-0 top-0 h-1 w-full bg-linear-to-br ${card.formColor} ${card.toColor}`}
             />
-            <div className="flex flex-col xl:flex-row items-start justify-between">
-              <div className="order-2 xl:order-1">
+            <div className="flex items-start justify-between">
+              <div>
                 <h3 className="text-md font-medium capitalize text-amazon-textLight/60">
                   {card.title}
                 </h3>
@@ -139,7 +139,7 @@ export default function StatsGrid() {
                 </p>
               </div>
               <div
-                className={`order-1 xl:order-2 flex h-14 w-14 items-center justify-center rounded-3xl bg-linear-to-br ${card.formColor} ${card.toColor} transition-all duration-300 hover:rotate-12 hover:shadow hover:scale-110`}
+                className={`flex h-14 w-14 items-center justify-center rounded-3xl bg-linear-to-br ${card.formColor} ${card.toColor} transition-all duration-300 hover:rotate-12 hover:shadow hover:scale-110`}
               >
                 {card.icon}
               </div>
