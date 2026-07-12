@@ -8,7 +8,7 @@ git clone https://github.com/FaroukZakaria/SEF_ACADEMY-Internship_G5
 ```
 ### 2. Navigate inside the React project workspace folder
 ```bash
-cd my-react-app
+cd SEF_ACADEMY-Internship_G5
 ```
 
 ### 3. Download and install team packages (React Router, etc.)
