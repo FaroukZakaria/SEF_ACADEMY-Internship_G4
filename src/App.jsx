@@ -11,7 +11,15 @@ import DashboardView from "./pages/DashboardView";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+import TemplateLayout from "./components/TemplateLayout";
 import DashboardLayout from "./components/DashboardLayout";
+import UsersLayout from "./components/UsersLayout";
+import ProductsLayout from "./components/ProductsLayout";
+import ProductsAddLayout from "./components/ProductsAddLayout";
+import OrdersLayout from "./components/OrdersLayout";
+import CartLayout from "./components/CartLayout";
+import SettingsLayout from "./components/SettingsLayout";
+
 import ProtectedRoute from "./components/ProtectedRoute";
 import useThemeStore from "./store/themeStore";
 import { useEffect } from "react";
@@ -32,65 +40,49 @@ function App() {
           <Route
             path="/dashboard"
             element={
-              <DashboardLayout>
-                <ProtectedRoute>
-                  <DashboardView />
-                </ProtectedRoute>
-              </DashboardLayout>
+              <DashboardLayout />
             }
           />
 
           <Route
             path="/users"
             element={
-              <ProtectedRoute>
-                <DashboardLayout>{/* <Users /> */}</DashboardLayout>
-              </ProtectedRoute>
+            <UsersLayout />
             }
           />
 
           <Route
             path="/products"
             element={
-              <ProtectedRoute>
-                <DashboardLayout>{/* <Products /> */}</DashboardLayout>
-              </ProtectedRoute>
+              <ProductsLayout />
             }
           />
 
           <Route
             path="/products/add"
             element={
-              <ProtectedRoute>
-                <DashboardLayout>{/* <AddProduct /> */}</DashboardLayout>
-              </ProtectedRoute>
+              <ProductsAddLayout />
             }
           />
 
           <Route
             path="/orders"
             element={
-              <ProtectedRoute>
-                <DashboardLayout>{/* <Orders /> */}</DashboardLayout>
-              </ProtectedRoute>
+              <OrdersLayout />
             }
           />
 
           <Route
             path="/cart"
             element={
-              <ProtectedRoute>
-                <DashboardLayout>{/* <Cart /> */}</DashboardLayout>
-              </ProtectedRoute>
+              <CartLayout />
             }
           />
 
           <Route
             path="/settings"
             element={
-              <ProtectedRoute>
-                <DashboardLayout>{/* <Settings /> */}</DashboardLayout>
-              </ProtectedRoute>
+              <SettingsLayout />
             }
           />
 
