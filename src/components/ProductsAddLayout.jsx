@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import AddProductPage from "../pages/AddProductPage";
 import Sidebar from "./sidebar/Sidebar";
 import MobileSidebar from "./sidebar/MobileSidebar";
 import Topbar from "./Topbar";
@@ -36,9 +37,9 @@ const ProductsAddLayout = () => {
         <MobileSidebar open={open} setOpen={setOpen} />
         <div className="dashboard-main bg-amazon-bg lg:pl-72">
         <Topbar userData={userData} open={open} onMenuClick={() => setOpen((prev) => !prev)} />
-        <ProtectedRoute>
-            {/* YOUR COMPONENT HERE */}
-        </ProtectedRoute>
+       <ProtectedRoute>
+  <AddProductPage />
+</ProtectedRoute>
         </div>
         </>}
     </>
