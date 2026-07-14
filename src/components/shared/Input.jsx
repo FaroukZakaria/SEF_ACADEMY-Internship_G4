@@ -1,7 +1,16 @@
 import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
-const Input = ({ label, type, placeholder, register, error, icon }) => {
+const Input = ({
+  label,
+  type,
+  placeholder,
+  register,
+  error,
+  icon,
+  className="",
+  ...props
+}) => {
   const [showPassword, setShowPassword] = useState(false);
 
   const isPassword = type === "password";
@@ -13,13 +22,14 @@ const Input = ({ label, type, placeholder, register, error, icon }) => {
       </label>
 
       <div className="flex items-center rounded-xl border border-amazon-border bg-amazon-surface px-4 transition-colors focus-within:border-amazon-orange">
-        <span className="text-amazon-textLight">{icon}</span>
+        {icon && <span className="text-amazon-textLight">{icon}</span>}
 
         <input
           type={isPassword ? (showPassword ? "text" : "password") : type}
           placeholder={placeholder}
           {...register}
-          className="w-full bg-transparent px-3 py-3 outline-none text-amazon-textDark placeholder:text-amazon-textLight"
+          {...props}
+          className={`w-full bg-transparent py-3 outline-none text-amazon-textDark placeholder:text-amazon-textLight ${className? className : "px-3"}`}
         />
 
         {isPassword && (
@@ -33,7 +43,9 @@ const Input = ({ label, type, placeholder, register, error, icon }) => {
         )}
       </div>
 
-      {error && <p className="mt-1 text-sm text-destructive">{error.message}</p>}
+      {error && (
+        <p className="mt-1 text-sm text-destructive">{error.message}</p>
+      )}
     </div>
   );
 };
