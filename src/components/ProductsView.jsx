@@ -1,6 +1,7 @@
 import { BsBoxSeam } from "react-icons/bs";
 import { FaPlus } from "react-icons/fa6";
 import { Link } from "react-router-dom";
+import { ProductStatusCard } from "./ProductStatusCard"
 const ProductsView = () => {
   return (
     <div className="px-10 lg:px-17 pt-10">
@@ -28,6 +29,7 @@ const ProductsView = () => {
           </Link>
         </div>
       </div>
+      <ProductStatusCard />
     </div>
   );
 };
