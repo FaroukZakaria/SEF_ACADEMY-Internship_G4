@@ -63,7 +63,6 @@ const ProductStatusCard = () => {
     },
   ];
   return (
-    <div className="px-10 lg:px-17">
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mt-7">
         {cardStatistics.map((card, index) => (
           <div
@@ -84,7 +83,6 @@ const ProductStatusCard = () => {
           </div>
         ))}
       </div>
-    </div>
   );
 };
 export default ProductStatusCard;
