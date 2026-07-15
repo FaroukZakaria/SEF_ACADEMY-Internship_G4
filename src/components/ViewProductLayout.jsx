@@ -2,13 +2,13 @@ import { useEffect, useState } from "react";
 import Sidebar from "./sidebar/Sidebar";
 import MobileSidebar from "./sidebar/MobileSidebar";
 import Topbar from "./Topbar";
-import DashboardView from "../pages/DashboardView";
+//import DashboardView from "../pages/DashboardView";
 import LoadingSpinner from "./LoadingSpinner";
 import axios from "/src/api/axios";
 import ProtectedRoute from "./ProtectedRoute";
 import ViewProduct from "../pages/ViewProduct";
 
-const ProductsAddLayout = () => {
+const ViewProductLayout = () => {
   const [isSessionLoading, setIsSessionLoading] = useState(true);
   const [userData, setUserData] = useState(null);
 
@@ -39,8 +39,10 @@ const ProductsAddLayout = () => {
         <Topbar userData={userData} open={open} onMenuClick={() => setOpen((prev) => !prev)} />
         <ProtectedRoute>
             {/* YOUR COMPONENT HERE */}
-
             <ViewProduct />
+
+
+
         </ProtectedRoute>
         </div>
         </>}
@@ -48,4 +50,4 @@ const ProductsAddLayout = () => {
   );
 };
 
-export default ProductsAddLayout;
+export default ViewProductLayout;

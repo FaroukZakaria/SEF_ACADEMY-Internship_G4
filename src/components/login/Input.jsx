@@ -9,7 +9,7 @@ const Input = ({ label, type, placeholder, register, error, icon }) => {
   return (
     <div className="mb-5">
       <label className="mb-2 block text-sm font-semibold text-amazon-textDark">
-        {label}
+        {label}  
       </label>
 
       <div className="flex items-center rounded-xl border border-amazon-border bg-amazon-surface px-4 transition-colors focus-within:border-amazon-orange">
