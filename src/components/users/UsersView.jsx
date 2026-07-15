@@ -3,6 +3,7 @@ import { useState } from "react";
 import { IoSearchOutline, IoPersonAddOutline, IoChevronDownOutline } from "react-icons/io5";
 import UserStatusCard from "./UserStatusCard";
 import CreateUserForm from "./CreateUserForm";
+import UsersTable from "./UsersTable";
 export default function UsersView() {
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
