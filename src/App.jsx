@@ -23,6 +23,8 @@ import SettingsLayout from "./components/SettingsLayout";
 import ProtectedRoute from "./components/ProtectedRoute";
 import useThemeStore from "./store/themeStore";
 import { useEffect } from "react";
+import EditProductView from "./components/EditProductView";
+import EditProductViewLayout from "./components/EditProductViewLayout";
 
 function App() {
   const { theme } = useThemeStore();
@@ -58,6 +60,15 @@ function App() {
             }
           />
 
+          <Route
+            path="/products/add"
+            element={
+              <ProductsAddLayout />
+            }
+          />
+           <Route path="/dashboard/products" element={<EditProductViewLayout/>}>
+            <Route path="edit/:id" element={<EditProductView />} />
+          </Route>
           <Route
             path="/products/add"
             element={
