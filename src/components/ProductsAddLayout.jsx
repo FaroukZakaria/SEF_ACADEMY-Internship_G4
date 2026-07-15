@@ -38,8 +38,6 @@ const ProductsAddLayout = () => {
         <div className="dashboard-main bg-amazon-bg lg:pl-72">
         <Topbar userData={userData} open={open} onMenuClick={() => setOpen((prev) => !prev)} />
         <ProtectedRoute>
-            {/* YOUR COMPONENT HERE */}
-
             <ViewProduct />
         </ProtectedRoute>
         </div>
