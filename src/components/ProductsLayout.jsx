@@ -8,6 +8,7 @@ import axios from "/src/api/axios";
 import ProtectedRoute from "./ProtectedRoute";
 import ProductsView from "./ProductsView";
 import ProductStatusCard from "./ProductStatusCard";
+import AllProducts from "./products/AllProducts"
 
 const ProductsLayout = () => {
   const [isSessionLoading, setIsSessionLoading] = useState(true);
@@ -41,6 +42,7 @@ const ProductsLayout = () => {
         <ProtectedRoute>
             <ProductsView />
             <ProductStatusCard />
+            <AllProducts />
         </ProtectedRoute>
         </div>
         </>}

@@ -67,3 +67,33 @@ input:-webkit-autofill {
   -webkit-box-shadow: 0 0 0 1000px var(--color-amazon-surface) inset !important;
   -webkit-text-fill-color: var(--color-amazon-textDark) !important;
 }
+
+.custom-pagination-wrapper {
+  position: absolute !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 12px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  width: fit-content !important;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.custom-pagination-wrapper .swiper-pagination-bullet {
+  width: 6px;
+  height: 6px;
+  margin: 0;
+  border-radius: 9999px;
+  background: #9ca3af;
+  opacity: 1;
+  transition: all .2s ease;
+}
+
+.custom-pagination-wrapper .swiper-pagination-bullet-active {
+  width: 8px;
+  height: 8px;
+  background: #3b82f6;
+}
