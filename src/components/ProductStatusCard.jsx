@@ -1,6 +1,3 @@
-import { useEffect, useState } from "react";
-import api from "../api/axios";
-import ProductStatusCardSkeleton from "./ProductStatusCardSkeleton";
 import { BsBoxSeam } from "react-icons/bs";
 import { FaRegStar } from "react-icons/fa";
 import { IoMdTrendingUp } from "react-icons/io";
