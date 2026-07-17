@@ -2,6 +2,9 @@ import { BsBoxSeam } from "react-icons/bs";
 import { FaRegStar } from "react-icons/fa";
 import { IoMdTrendingUp } from "react-icons/io";
 import { TbHexagons } from "react-icons/tb";
+
+
+
 const ProductStatusCard = ({productsStatistics}) => {
   const cardStatistics = [
     {
@@ -40,6 +43,7 @@ const ProductStatusCard = ({productsStatistics}) => {
     },
   ];
   return (
+    <div className="px-10 lg:px-17">
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mt-7">
         {cardStatistics.map((card, index) => (
           <div
@@ -60,6 +64,7 @@ const ProductStatusCard = ({productsStatistics}) => {
           </div>
         ))}
       </div>
+    </div>
   );
 };
 export default ProductStatusCard;
