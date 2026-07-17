@@ -39,6 +39,7 @@ const AllProducts = () => {
         if (!confirmed) return;
 
         try {
+            setLoading(true);
             await api.delete(`/products/${productId}`);
             toast.success("Product removed successfully");
             setproductData((prev) => ({
@@ -48,7 +49,9 @@ const AllProducts = () => {
             }));
         } catch (error) {
             toast.error(error.response?.data?.message || "Failed to remove product");
-        }
+        } finally {
+        setLoading(false);
+    }
     };
 
     const handleQuickEditSuccess = (updatedProduct) => {
@@ -60,6 +63,7 @@ const AllProducts = () => {
 
     const handleSearch = async ({ query, category, subcategory }) => {
     try {
+        setLoading(true);
         const params = new URLSearchParams();
         if (query) 
             params.append("search", query);
@@ -71,6 +75,8 @@ const AllProducts = () => {
         setproductData(data);
     } catch (error) {
         console.log(error);
+    } finally {
+        setLoading(false);
     }
 }
 
