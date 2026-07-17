@@ -16,6 +16,8 @@ import DashboardLayout from "./components/DashboardLayout";
 import UsersLayout from "./components/UsersLayout";
 import ProductsLayout from "./components/ProductsLayout";
 import ProductsAddLayout from "./components/ProductsAddLayout";
+import ViewProductLayout from "./components/ViewProductLayout";
+
 import OrdersLayout from "./components/OrdersLayout";
 import CartLayout from "./components/CartLayout";
 import SettingsLayout from "./components/SettingsLayout";
@@ -64,6 +66,13 @@ function App() {
               <ProductsAddLayout />
             }
           />
+
+          <Route
+            path="/products/:id"
+            element={
+              <ViewProductLayout />
+            }
+            />
 
           <Route
             path="/orders"

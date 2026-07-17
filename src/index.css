@@ -67,3 +67,45 @@ input:-webkit-autofill {
   -webkit-box-shadow: 0 0 0 1000px var(--color-amazon-surface) inset !important;
   -webkit-text-fill-color: var(--color-amazon-textDark) !important;
 }
+
+
+      /* Shimmer */
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.shimmer {
+  position: relative;
+  overflow: hidden;
+  background-color: #e5e7eb;
+}
+
+.dark .shimmer {
+  background-color: #374151;
+}
+
+.shimmer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255,255,255,.5),
+    transparent
+  );
+  animation: shimmer 1.4s infinite;
+}
+
+.dark .shimmer::after {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255,255,255,.12),
+    transparent
+  );
+}      

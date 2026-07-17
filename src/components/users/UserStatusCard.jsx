@@ -3,6 +3,7 @@ import { IoPeopleOutline, IoShieldOutline, IoCheckmarkCircleOutline } from "reac
 import { toast } from "react-toastify";
 import api from "../../api/axios";
 
+
 export default function UserStatusCard({ refreshTrigger }) {
   const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState({
@@ -54,8 +55,7 @@ export default function UserStatusCard({ refreshTrigger }) {
       {cards.map(({ title, value, icon: Icon }) => (
         <div
           key={title}
-          className="rounded-3xl border border-amazon-border bg-amazon-surface p-6 shadow-lg
-                     transition-colors"
+          className="rounded-3xl border border-amazon-border bg-amazon-surface p-6 shadow-lg transition-colors"
         >
           <div className="flex items-center justify-between">
             <div className="min-w-0">

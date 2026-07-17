@@ -3,6 +3,10 @@ import { useState } from "react";
 import { IoSearchOutline, IoPersonAddOutline, IoChevronDownOutline } from "react-icons/io5";
 import UserStatusCard from "./UserStatusCard";
 import CreateUserForm from "./CreateUserForm";
+import UsersTable from "./UsersTable";
+
+
+
 export default function UsersView() {
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -17,8 +21,7 @@ export default function UsersView() {
     <div className="flex flex-col gap-6 p-6 md:p-8">
       {/* Header + Search + Add User */}
       <div
-        className="rounded-3xl border border-amazon-border bg-amazon-surface p-6 shadow-lg
-                   transition-colors"
+        className="rounded-3xl border border-amazon-border bg-amazon-surface p-6 shadow-lg transition-colors"
       >
         <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           <div>
@@ -71,8 +74,7 @@ export default function UsersView() {
       )}
 
       <UserStatusCard refreshTrigger={refreshTrigger} />
-
-      {/* <UsersTable /> */}
+      <UsersTable refreshTrigger={refreshTrigger} setRefreshTrigger={setRefreshTrigger} searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
     </div>
   );
 }

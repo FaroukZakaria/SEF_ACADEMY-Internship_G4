@@ -95,8 +95,7 @@ export default function CreateUserForm({ onClose, onSuccess }) {
 
   return (
     <div
-      className="rounded-3xl border border-amazon-border bg-amazon-surface p-6 shadow-lg
-                 transition-colors"
+      className="rounded-3xl border border-amazon-border bg-amazon-surface p-6 shadow-lg transition-colors"
     >
       {/* Header */}
       <div className="flex items-start justify-between">
@@ -170,8 +169,7 @@ export default function CreateUserForm({ onClose, onSuccess }) {
           <button
             onClick={handleClear}
             disabled={submitting}
-            className="rounded-2xl border border-amazon-border px-5 py-2.5 font-semibold
-                       text-amazon-textDark hover:bg-amazon-bg transition disabled:opacity-50"
+            className="rounded-2xl border border-amazon-border px-5 py-2.5 font-semibold text-amazon-textDark hover:bg-amazon-bg transition disabled:opacity-50"
           >
             Clear
           </button>
