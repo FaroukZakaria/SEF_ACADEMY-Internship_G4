@@ -2,10 +2,11 @@ import { useEffect, useState } from "react";
 import Sidebar from "./sidebar/Sidebar";
 import MobileSidebar from "./sidebar/MobileSidebar";
 import Topbar from "./Topbar";
-import DashboardView from "../pages/DashboardView";
+import UsersView from "./users/UsersView";
 import LoadingSpinner from "./LoadingSpinner";
 import axios from "/src/api/axios";
 import ProtectedRoute from "./ProtectedRoute";
+import UsersTable from "./users/UsersTable";
 
 const UsersLayout = () => {
   const [isSessionLoading, setIsSessionLoading] = useState(true);
@@ -37,7 +38,7 @@ const UsersLayout = () => {
         <div className="dashboard-main bg-amazon-bg lg:pl-72">
         <Topbar userData={userData} open={open} onMenuClick={() => setOpen((prev) => !prev)} />
         <ProtectedRoute>
-            {/* YOUR COMPONENT HERE */}
+          <UsersView />
         </ProtectedRoute>
         </div>
         </>}
