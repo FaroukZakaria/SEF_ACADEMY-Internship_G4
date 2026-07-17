@@ -69,7 +69,7 @@ const ProductCard = ({product, onView, onEdit, onQuickEdit, onDelete}) => {
                     </span>
                 )}
                 <span className={`absolute bottom-3 right-3 text-xs font-bold px-3 py-2 rounded-full z-10 backdrop-blur-sm
-                ${product.stock > 0 ? "bg-green-700/50 text-green-300" : "bg-red-100 text-red-600"}`}>
+                ${product.stock > 0 ? "bg-green-700/50 text-green-300" : "bg-red-300/70 text-red-600"}`}>
                 {product.stock > 0 ? `${product.stock} in Stock` : "Out of Stock"}
                 </span>
             </div>
