@@ -6,18 +6,19 @@ import ConfirmDelete from "../shared/ConfirmDelete";
 import { toast } from "react-toastify";
 import EditUser from "./EditUser";
 
-const UsersTable = () => {
+const UsersTable = ({refreshTrigger, setRefreshTrigger, searchQuery, setSearchQuery}) => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const [selectedUser, setSelectedUser] = useState(null);
-  const [modal, setModal] = useState(null);  // null | "delete" | "edit"
+  const [modal, setModal] = useState(null);
   
   const [isDeleting, setIsDeleting] = useState(false);
 
   const [isUpdatingRole, setIsUpdatingRole] = useState(null);
 
   useEffect(() => {
+    setLoading(true);
     const fetchUsers = async () => {
       try {
         const { data } = await api.get("/users/all");
@@ -33,7 +34,7 @@ const UsersTable = () => {
     };
 
     fetchUsers();
-  }, []);
+  }, [refreshTrigger]);
 
   const openDeleteModal = (user) => {
     setSelectedUser(user);
@@ -66,6 +67,8 @@ const UsersTable = () => {
       setUsers((prev) => prev.filter((user) => user._id !== selectedUser._id));
 
       closeDeleteModal();
+      setRefreshTrigger((prev) => prev + 1);
+      setSearchQuery("");
     } catch (error) {
       toast.error(
         error.response?.data?.message ||
@@ -90,6 +93,7 @@ const UsersTable = () => {
       toast.success(data.message);
 
       setUsers((prev) => prev.map((u) => (u._id === user._id ? data.user : u)));
+      setRefreshTrigger((prev) => prev + 1);
     } catch (error) {
       toast.error(
         error.response?.data?.message || "Failed to update user role.",
@@ -101,7 +105,15 @@ const UsersTable = () => {
 
   if (loading) return <UserTableSkeleton />;
 
-  if (!loading && users.length === 0) {
+  const filteredUsers = users.filter((user) => {
+    const query = searchQuery.toLowerCase();
+    return (
+      user.username.toLowerCase().includes(query) ||
+      user.email.toLowerCase().includes(query)
+    );
+  });
+
+  if (!loading && filteredUsers.length === 0) {
     return <div className="py-20 text-center">No users found.</div>;
   }
 
@@ -119,7 +131,7 @@ const UsersTable = () => {
           </thead>
 
           <tbody>
-            {users.map((user) => (
+            {filteredUsers.map((user) => (
               <UserRow
                 key={user._id}
                 user={user}
