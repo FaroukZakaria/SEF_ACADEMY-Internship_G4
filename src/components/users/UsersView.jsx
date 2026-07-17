@@ -18,15 +18,14 @@ export default function UsersView() {
     <div className="flex flex-col gap-6 p-6 md:p-8">
       {/* Header + Search + Add User */}
       <div
-        className="rounded-3xl border border-amazon-border bg-amazon-surface p-6 shadow-lg
-                   dark:border-amazon-lightNavy dark:bg-amazon-navy transition-colors"
+        className="rounded-3xl border border-amazon-border bg-amazon-surface p-6 shadow-lg transition-colors"
       >
         <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           <div>
             <p className="text-sm uppercase tracking-[0.3em] text-amazon-orange">
               User Management
             </p>
-            <h2 className="mt-2 text-3xl font-bold text-amazon-textDark dark:text-white">
+            <h2 className="mt-2 text-3xl font-bold text-amazon-textDark">
               Manage Users
             </h2>
           </div>
@@ -34,15 +33,14 @@ export default function UsersView() {
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
             {/* Search  */}
             <div className="relative w-full lg:w-80">
-              <IoSearchOutline className="absolute left-4 top-3.5 h-5 w-5 text-amazon-textLight dark:text-slate-400" />
+              <IoSearchOutline className="absolute left-4 top-3.5 h-5 w-5 text-amazon-textLight" />
               <input
                 placeholder="Search users..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full rounded-2xl border border-amazon-border bg-amazon-bg py-3 pl-12 pr-4
                            text-amazon-textDark outline-none focus:ring-2 focus:ring-amazon-orange
-                           dark:border-amazon-lightNavy dark:bg-amazon-lightNavy dark:text-white
-                           placeholder:text-amazon-textLight/70 dark:placeholder:text-slate-500"
+                           placeholder:text-amazon-textLight/70"
               />
             </div>
 
@@ -73,7 +71,7 @@ export default function UsersView() {
       )}
 
       <UserStatusCard refreshTrigger={refreshTrigger} />
-      <UsersTable />
+      <UsersTable refreshTrigger={refreshTrigger} setRefreshTrigger={setRefreshTrigger} searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
     </div>
   );
 }
