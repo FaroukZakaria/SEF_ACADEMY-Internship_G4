@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import api from "../api/axios";
-import StatsGridSkeleton from "./StatsGridSkeleton";
+import ProductStatusCardSkeleton from "./ProductStatusCardSkeleton";
 import { BsBoxSeam } from "react-icons/bs";
 import { FaRegStar } from "react-icons/fa";
 import { IoMdTrendingUp } from "react-icons/io";
@@ -24,12 +24,12 @@ const ProductStatusCard = () => {
   }, []);
 
   if (loading) {
-    return <StatsGridSkeleton />;
+    return <ProductStatusCardSkeleton />;
   }
   const cardStatistics = [
     {
       icon: <BsBoxSeam size={22} className="text-amazon-orange" />,
-      value: productsStatistics?.totalProducts,
+      value: productsStatistics?.totalProducts || 0,
       title: "total",
       colorbg: "bg-amazon-yellow/20",
       colorborder: "border-amazon-yellow/50",
