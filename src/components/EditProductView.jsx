@@ -398,7 +398,7 @@ export default function EditProductView() {
       await api.patch(`/products/update/${id}`, payload); 
       
       toast.success("Product updated successfully!");
-      navigate("/dashboard/products");
+      navigate("/products");
     } catch (err) {
       const errorMsg = err.response?.data?.message || "Failed to save product";
       setGlobalError(errorMsg);
@@ -439,7 +439,7 @@ export default function EditProductView() {
         <div className="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 rounded-full bg-indigo-500/5 blur-3xl pointer-events-none"></div>
 
         <div className="relative z-10 w-full">
-          <Link to="/dashboard/products" className="inline-flex items-center gap-2 text-xs font-medium text-amazon-textLight bg-amazon-bg/50 border border-amazon-border px-4 py-2 rounded-full hover:bg-amazon-bg hover:text-amazon-textDark transition-colors mb-6">
+          <Link to="/products" className="inline-flex items-center gap-2 text-xs font-medium text-amazon-textLight bg-amazon-bg/50 border border-amazon-border px-4 py-2 rounded-full hover:bg-amazon-bg hover:text-amazon-textDark transition-colors mb-6">
             {ArrowLeftIcon("w-4 h-4")} Back to products
           </Link>
           
@@ -578,7 +578,7 @@ export default function EditProductView() {
           </div>
 
           <div className="flex items-center justify-end gap-3 pt-6 mt-6 border-t border-amazon-border">
-            <Link to="/dashboard/products" className="px-5 py-2.5 bg-amazon-bg text-amazon-textDark hover:opacity-80 border border-amazon-border rounded-lg text-sm font-semibold transition-colors">
+            <Link to="/products" className="px-5 py-2.5 bg-amazon-bg text-amazon-textDark hover:opacity-80 border border-amazon-border rounded-lg text-sm font-semibold transition-colors">
               Cancel
             </Link>
             <button type="submit" disabled={isSubmitting} className="px-6 py-2.5 bg-amazon-orange hover:bg-amazon-orangeHover text-amazon-navy rounded-lg text-sm font-bold transition-colors disabled:opacity-70 flex items-center gap-2 shadow-sm">
