@@ -38,7 +38,7 @@ const UsersLayout = () => {
         <div className="dashboard-main bg-amazon-bg lg:pl-72">
         <Topbar userData={userData} open={open} onMenuClick={() => setOpen((prev) => !prev)} />
         <ProtectedRoute>
-          <UsersView />
+          <UsersView userData={userData} setUserData={setUserData} />
         </ProtectedRoute>
         </div>
         </>}

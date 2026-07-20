@@ -43,7 +43,6 @@ const EditProductViewLayout = ({ children }) => {
             <Topbar userData={userData} open={open} onMenuClick={() => setOpen((prev) => !prev)} />
             <ProtectedRoute>
               <EditProductView/>
-              {children}
             </ProtectedRoute>
           </div>
         </>
