@@ -6,6 +6,7 @@ import DashboardView from "../pages/DashboardView";
 import LoadingSpinner from "./LoadingSpinner";
 import axios from "/src/api/axios";
 import ProtectedRoute from "./ProtectedRoute";
+import Settings from "./Settings";
 
 const SettingsLayout = () => {
   const [isSessionLoading, setIsSessionLoading] = useState(true);
@@ -37,7 +38,7 @@ const SettingsLayout = () => {
         <div className="dashboard-main bg-amazon-bg lg:pl-72">
         <Topbar userData={userData} open={open} onMenuClick={() => setOpen((prev) => !prev)} />
         <ProtectedRoute>
-            {/* YOUR COMPONENT HERE */}
+            <Settings/>
         </ProtectedRoute>
         </div>
         </>}

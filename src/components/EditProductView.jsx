@@ -231,7 +231,7 @@ export default function EditProductView() {
               file: null,
               url: typeof img === "string" ? img : img.url,
               publicId: img.public_id || null,
-              dbId: img._id || null, // 👈 التقاط الـ ID الحقيقي من قاعدة البيانات
+              dbId: img._id || null,
               isExisting: true,
               isMarkedForRemoval: false, 
             }))
@@ -345,7 +345,7 @@ export default function EditProductView() {
     const validationErrors = validateForm(formData);
     
     if (activeImages.length === 0) {
-      setGlobalError("Product validation failed: images: Product must contain at least one image");
+      setGlobalError("Product validation failed: Product must contain at least one image");
       window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
@@ -360,8 +360,7 @@ export default function EditProductView() {
     try {
       const payload = new FormData();
       
-     
-
+      // إضافة النصوص
       payload.append("name", formData.name.trim());
       payload.append("shortDescription", formData.shortDescription.trim());
       payload.append("description", formData.description.trim());
@@ -379,22 +378,20 @@ export default function EditProductView() {
       const tagsArray = formData.tags.split(",").map((tag) => tag.trim()).filter(Boolean);
       tagsArray.forEach((tag) => payload.append("tags", tag));
 
+      // إضافة الصور الجديدة
       activeImages.forEach((img) => {
         if (!img.isExisting && img.file) {
           payload.append("images", img.file);
         }
       });
 
-      // 👈 تم إصلاح مشكلة حذف الصور (تصفية كلمة "undefined")
+      // إضافة الصور المحذوفة كمصفوفة JSON صحيحة
       const imagesToDelete = images.filter(img => img.isMarkedForRemoval && img.isExisting);
-      imagesToDelete.forEach((img) => {
-        const idToDelete = img.dbId || img.publicId;
-        if (idToDelete && idToDelete !== "undefined" && idToDelete !== "null") {
-          payload.append("deletedImages", idToDelete);
-        }
-      });
+      if (imagesToDelete.length > 0) {
+        const deletedIdsArray = imagesToDelete.map(img => img.publicId).filter(Boolean);
+        payload.append("deletedImages", JSON.stringify(deletedIdsArray));
+      }
 
-      // 👈 تم إزالة الهيدرز اليدوية ليقوم Axios بإنشاء الـ boundary بنفسه
       await api.patch(`/products/update/${id}`, payload); 
       
       toast.success("Product updated successfully!");
