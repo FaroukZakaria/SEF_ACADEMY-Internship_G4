@@ -1,4 +1,3 @@
-// src/pages/AdminOrdersPage.jsx
 import React, { useState, useEffect, useCallback } from 'react';
 import api from "../api/axios";
 import OrderSkeleton from '../components/admin/OrderSkeleton';
@@ -89,8 +88,7 @@ export default function AdminOrdersPage() {
 
   return (
     <div className="p-6 bg-amazon-bg min-h-screen font-sans">
-      
-      {/* Top Header & Badge */}
+    
       <div className="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
         <div>
           <span className="text-xs uppercase tracking-wider text-amazon-textLight font-semibold">Admin • Management</span>
@@ -102,8 +100,6 @@ export default function AdminOrdersPage() {
           <span className="text-xs text-amazon-textLight uppercase tracking-wide font-medium">total orders</span>
         </div>
       </div>
-
-      {/* Search and Filters Bar */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
         <div className="relative md:col-span-1">
           <span className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none text-amazon-textLight">
@@ -157,8 +153,6 @@ export default function AdminOrdersPage() {
           <option value="stripe">Stripe</option>
         </select>
       </div>
-
-      {/* Main Content Area & Table with Horizontal Scroll */}
       <div className="bg-amazon-surface border border-amazon-border rounded-2xl shadow-xl overflow-hidden mb-6">
         
         {error && (
@@ -253,8 +247,6 @@ export default function AdminOrdersPage() {
             </table>
           </div>
         )}
-
-        {/* Custom Pagination Style */}
         {!loading && totalPages > 1 && (
           <div className="flex items-center justify-between px-6 py-4 border-t border-amazon-border bg-amazon-surface">
             <span className="text-sm text-amazon-textLight">
