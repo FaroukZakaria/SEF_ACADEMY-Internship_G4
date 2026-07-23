@@ -61,9 +61,12 @@ export default function AdminOrdersPage() {
       let fetchedOrders = data.orders || [];
       
       if (debouncedSearch.trim()) {
-        fetchedOrders = fetchedOrders.filter(order => 
-          order._id.toLowerCase().includes(debouncedSearch.trim().toLowerCase())
-        );
+        const cleanSearch = debouncedSearch.trim().replace('#', '').toLowerCase();
+        fetchedOrders = fetchedOrders.filter(order => {
+          const fullId = order._id.toLowerCase();
+          const shortId = order._id.slice(-8).toLowerCase();
+          return fullId.includes(cleanSearch) || shortId.includes(cleanSearch);
+        });
       }
 
       if (methodFilter !== 'all') {
@@ -100,6 +103,7 @@ export default function AdminOrdersPage() {
           <span className="text-xs text-amazon-textLight uppercase tracking-wide font-medium">total orders</span>
         </div>
       </div>
+
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
         <div className="relative md:col-span-1">
           <span className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none text-amazon-textLight">
@@ -153,6 +157,7 @@ export default function AdminOrdersPage() {
           <option value="stripe">Stripe</option>
         </select>
       </div>
+
       <div className="bg-amazon-surface border border-amazon-border rounded-2xl shadow-xl overflow-hidden mb-6">
         
         {error && (
@@ -209,7 +214,7 @@ export default function AdminOrdersPage() {
                   });
 
                   return (
-                    <tr key={order._id} className="hover:bg-amazon-lightNavy/30 transition-colors">
+                    <tr key={order._id} className="hover:bg-amazon-lightNavy/35 transition-colors">
                       <td className="py-4 px-6 font-medium text-amazon-orange whitespace-nowrap">
                         #{order._id.slice(-8).toUpperCase()}
                       </td>
@@ -247,6 +252,7 @@ export default function AdminOrdersPage() {
             </table>
           </div>
         )}
+
         {!loading && totalPages > 1 && (
           <div className="flex items-center justify-between px-6 py-4 border-t border-amazon-border bg-amazon-surface">
             <span className="text-sm text-amazon-textLight">
