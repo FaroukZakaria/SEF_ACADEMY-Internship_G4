@@ -14,6 +14,7 @@ const AllProducts = () => {
     const [productData, setproductData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [quickEditProduct, setQuickEditProduct] = useState(null);
+    const [filters, setFilters] = useState({ query: "", category: "", subcategory: "" });
 
     const navigate = useNavigate();
     useEffect(() => {
@@ -61,9 +62,10 @@ const AllProducts = () => {
         }))
     } 
 
-    const handleSearch = async ({ query, category, subcategory }) => {
+    const handleSearch = async (newFilters) => {
     try {
         setLoading(true);
+        const { query, category, subcategory } = newFilters;
         const params = new URLSearchParams();
         if (query) 
             params.append("search", query);
@@ -83,7 +85,7 @@ const AllProducts = () => {
     return(
         <div>
             <ProductStatusCard productsStatistics={productData} />
-            <SearchProductBar onSearch={handleSearch}/>
+            <SearchProductBar filters={filters} onFiltersChange={setFilters} onSearch={handleSearch}/>
             {productData?.products.length > 0 ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 mt-7">
                     {productData.products.map((product) => (

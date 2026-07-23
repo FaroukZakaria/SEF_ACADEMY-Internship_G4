@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { TbAdjustmentsHorizontal } from "react-icons/tb";
 import { FiSearch } from "react-icons/fi";
 
@@ -12,11 +12,20 @@ const CATEGORY_OPTIONS = [
     { value: "sports", label: "Sports" },
 ];
 
-const SearchProductBar = ({onSearch}) => {
-    const [query, setQuery] = useState("");
+const SearchProductBar = ({ filters, onFiltersChange, onSearch }) => {
     const [showFilters, setShowFilters] = useState(false);
-    const [category, setCategory] = useState("");
-    const [subcategory, setSubcategory] = useState("");
+
+    const { query, category, subcategory } = filters;
+    
+    useEffect(() => {
+        if (category.trim() || subcategory.trim()) {
+            setShowFilters(true);
+        }
+    }, [category, subcategory]);
+
+    const setQuery = (value) => onFiltersChange({ ...filters, query: value });
+    const setCategory = (value) => onFiltersChange({ ...filters, category: value });
+    const setSubcategory = (value) => onFiltersChange({ ...filters, subcategory: value });
 
     const handleSearch = () => {
         onSearch({ query: query.trim(), category, subcategory: subcategory.trim() });

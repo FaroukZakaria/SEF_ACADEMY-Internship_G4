@@ -43,28 +43,26 @@ const ProductStatusCard = ({productsStatistics}) => {
     },
   ];
   return (
-    <>
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mt-7">
-        {cardStatistics.map((card, index) => (
+    <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mt-7">
+      {cardStatistics.map((card, index) => (
+        <div
+          key={index}
+          className="w-full rounded-4xl border border-amazon-border bg-amazon-surface p-5"
+        >
           <div
-            key={index}
-            className="w-full rounded-4xl border border-amazon-border bg-amazon-surface p-5"
+            className={`${card.colorbg} border ${card.colorborder} w-12 h-12 rounded-xl flex items-center justify-center`}
           >
-            <div
-              className={`${card.colorbg} border ${card.colorborder} w-12 h-12 rounded-xl flex items-center justify-center`}
-            >
-              {card.icon}
-            </div>
-            <h2 className="text-3xl font-semibold mt-3 mb-2 text-amazon-textDark">
-              {card.value}
-            </h2>
-            <p className="text-sm font-medium text-amazon-textLight/60 capitalize">
-              {card.title}
-            </p>
+            {card.icon}
           </div>
-        ))}
-      </div>
-    </>
+          <h2 className="text-3xl font-semibold mt-3 mb-2 text-amazon-textDark">
+            {card.value}
+          </h2>
+          <p className="text-sm font-medium text-amazon-textLight/60 capitalize">
+            {card.title}
+          </p>
+        </div>
+      ))}
+    </div>
   );
 };
 export default ProductStatusCard;
