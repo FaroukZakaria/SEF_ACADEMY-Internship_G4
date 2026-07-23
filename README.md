@@ -4,11 +4,11 @@ Follow these exact steps to pull the repository and spin up your local environme
 
 ### 1. Clone the project from our repository destination
 ```bash
-git clone https://github.com/FaroukZakaria/SEF_ACADEMY-Internship_G5
+git clone https://github.com/FaroukZakaria/SEF_ACADEMY-Internship_G4
 ```
 ### 2. Navigate inside the React project workspace folder
 ```bash
-cd SEF_ACADEMY-Internship_G5
+cd SEF_ACADEMY-Internship_G4
 ```
 
 ### 3. Download and install team packages (React Router, etc.)

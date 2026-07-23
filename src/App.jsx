@@ -68,9 +68,11 @@ function App() {
               <ProductsAddLayout />
             }
           />
-           <Route path="/dashboard/products" element={<EditProductViewLayout/>}>
-            <Route path="edit/:id" element={<EditProductView />} />
-          </Route>
+           <Route
+           path="/products/edit/:id"
+           element={<EditProductViewLayout />
+           }
+           />
           <Route
             path="/products/add"
             element={

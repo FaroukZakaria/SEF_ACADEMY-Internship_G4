@@ -5,8 +5,10 @@ import UserRow from "./UserRow";
 import ConfirmDelete from "../shared/ConfirmDelete";
 import { toast } from "react-toastify";
 import EditUser from "./EditUser";
+import {getName} from "../../utils/authService"
+import {getEmail} from "../../utils/authService"
 
-const UsersTable = ({refreshTrigger, setRefreshTrigger, searchQuery, setSearchQuery}) => {
+const UsersTable = ({refreshTrigger, setRefreshTrigger, searchQuery, setSearchQuery, userData, setUserData}) => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -94,6 +96,10 @@ const UsersTable = ({refreshTrigger, setRefreshTrigger, searchQuery, setSearchQu
 
       setUsers((prev) => prev.map((u) => (u._id === user._id ? data.user : u)));
       setRefreshTrigger((prev) => prev + 1);
+      if (getEmail() === user.email) {
+        localStorage.setItem("role" , newRole);
+        setUserData((prev) => ({ ...prev, role: newRole }));
+      }
     } catch (error) {
       toast.error(
         error.response?.data?.message || "Failed to update user role.",
@@ -161,7 +167,15 @@ const UsersTable = ({refreshTrigger, setRefreshTrigger, searchQuery, setSearchQu
           setUsers((prev) =>
             prev.map((u) => (u._id === updatedUser._id ? updatedUser : u)),
           );
-        }}
+          if (getEmail() === updatedUser.email) {
+            localStorage.setItem("name", updatedUser.username);
+            setUserData((prev) => ({ ...prev, username: updatedUser.username }));
+          }
+          }
+          
+        }
+        userData={userData}
+        setUserData={setUserData}
       />
     </>
   );

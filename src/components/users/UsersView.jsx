@@ -7,7 +7,7 @@ import UsersTable from "./UsersTable";
 
 
 
-export default function UsersView() {
+export default function UsersView({userData, setUserData}) {
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [refreshTrigger, setRefreshTrigger] = useState(0);
@@ -74,7 +74,7 @@ export default function UsersView() {
       )}
 
       <UserStatusCard refreshTrigger={refreshTrigger} />
-      <UsersTable refreshTrigger={refreshTrigger} setRefreshTrigger={setRefreshTrigger} searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+      <UsersTable refreshTrigger={refreshTrigger} setRefreshTrigger={setRefreshTrigger} searchQuery={searchQuery} setSearchQuery={setSearchQuery} userData={userData} setUserData={setUserData} />
     </div>
   );
 }
