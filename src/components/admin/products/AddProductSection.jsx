@@ -1,0 +1,33 @@
+import { BsBoxSeam } from "react-icons/bs";
+import { FaPlus } from "react-icons/fa6";
+import { Link } from "react-router-dom";
+
+const AddProductSection = () => {
+  return (
+    <div className="flex flex-col lg:flex-row items-center justify-between gap-6 border border-amazon-orange/20 shadow bg-linear-to-tr from-amazon-orange/20 to-amazon-yellow/30 p-8 rounded-4xl">
+      <div className="flex items-center gap-5">
+        <div className="bg-amazon-yellow/50 w-18 h-18 rounded-2xl flex items-center justify-center border border-amazon-orange py-2">
+          <BsBoxSeam size={30} className="text-amazon-orange" />
+        </div>
+        <div className="title">
+          <p className="font-light uppercase tracking-[0.3em] text-amazon-orange">
+            product dashboard
+          </p>
+          <p className="text-3xl font-extrabold mt-2 mb-2 capitalize text-amazon-textDark">
+            products
+          </p>
+        </div>
+      </div>
+      <div className="group w-full lg:w-fit flex items-center gap-2 py-3 px-4 rounded-2xl bg-amazon-orange hover:bg-amazon-orangeHover hover:shadow-md cursor-pointer shadow shadow-amazon-orangeHover ">
+        <FaPlus className="transition-transform duration-300 group-hover:rotate-90" />
+        <Link
+          to="/admin/products/add"
+          className="capitalize font-semibold text-amazon-textDark"
+        >
+          add products
+        </Link>
+      </div>
+    </div>
+  );
+};
+export default AddProductSection;
