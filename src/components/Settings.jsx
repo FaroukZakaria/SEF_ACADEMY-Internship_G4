@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import api from '../api/axios'; 
 import useThemeStore from '../store/themeStore'; 
 import SettingsSkeleton from './SettingsSkeleton'; 
+import { toast } from 'react-toastify'; // <-- استيراد toast
 
 const Settings = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -11,7 +12,6 @@ const Settings = () => {
   const [isSendingOtp, setIsSendingOtp] = useState(false);
   const [otpSent, setOtpSent] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [message, setMessage] = useState({ type: '', text: '' });
 
   const [passwordData, setPasswordData] = useState({
     email: '', 
@@ -49,7 +49,7 @@ const Settings = () => {
         }
       } catch (error) {
         console.error("Failed to fetch user data", error);
-        setMessage({ type: 'error', text: 'Failed to authenticate user. Please login again.' });
+        toast.error('Failed to authenticate user. Please login again.'); // <-- استخدام Toast
       } finally {
         setIsLoading(false); 
       }
@@ -65,10 +65,8 @@ const Settings = () => {
 
   // 1. Send OTP
   const handleSendOtp = async () => {
-    setMessage({ type: '', text: '' });
-    
     if (!passwordData.email) {
-      setMessage({ type: 'error', text: 'Could not fetch your email. Please refresh the page.' });
+      toast.error('Could not fetch your email. Please refresh the page.'); // <-- استخدام Toast
       return;
     }
 
@@ -80,13 +78,10 @@ const Settings = () => {
       });
 
       setOtpSent(true);
-      setMessage({ type: 'success', text: data.message || 'OTP has been sent to your email successfully!' });
+      toast.success(data.message || 'OTP has been sent to your email successfully!'); // <-- Toast Success
 
     } catch (error) {
-      setMessage({ 
-        type: 'error', 
-        text: error.response?.data?.message || 'Failed to send OTP. Please try again.' 
-      });
+      toast.error(error.response?.data?.message || 'Failed to send OTP. Please try again.'); // <-- Toast Error
     } finally {
       setIsSendingOtp(false);
     }
@@ -95,39 +90,34 @@ const Settings = () => {
   // 2. Verify OTP and Change Password
   const handlePasswordSubmit = async (e) => {
     e.preventDefault();
-    setMessage({ type: '', text: '' });
 
     if (!otpSent) {
-      setMessage({ type: 'error', text: 'Please send the OTP first.' });
+      toast.error('Please send the OTP first.');
       return;
     }
     if (passwordData.newPassword !== passwordData.confirmPassword) {
-      setMessage({ type: 'error', text: 'New passwords do not match.' });
+      toast.error('New passwords do not match.');
       return;
     }
     if (passwordData.newPassword.length < 8) {
-      setMessage({ type: 'error', text: 'Password must be at least 8 characters long.' });
+      toast.error('Password must be at least 8 characters long.');
       return;
     }
 
     setIsSubmitting(true);
 
     try {
-      // Updated Endpoint and Payload based on Swagger Screenshot
       const { data } = await api.post('/auth/forgot-password/verify-otp', {
         email: passwordData.email,
         otp: passwordData.otp,
         newPassword: passwordData.newPassword
       });
 
-      setMessage({ type: 'success', text: data.message || 'Password updated successfully!' });
+      toast.success(data.message || 'Password updated successfully!'); // <-- Toast Success
       setTimeout(() => handleCancel(), 2000);
 
     } catch (error) {
-      setMessage({ 
-        type: 'error', 
-        text: error.response?.data?.message || 'Failed to update password. Check your OTP.' 
-      });
+      toast.error(error.response?.data?.message || 'Failed to update password. Check your OTP.'); // <-- Toast Error
     } finally {
       setIsSubmitting(false);
     }
@@ -136,7 +126,6 @@ const Settings = () => {
   const handleCancel = () => {
     setShowPasswordForm(false);
     setOtpSent(false);
-    setMessage({ type: '', text: '' });
     setPasswordData(prev => ({ ...prev, otp: '', newPassword: '', confirmPassword: '' }));
   };
 
@@ -164,10 +153,6 @@ const Settings = () => {
           <div className="border-t pt-8" style={{ borderColor: currentColors.border }}>
             <h3 className="text-lg font-medium mb-1">Security</h3>
             <p className="text-sm mb-6" style={{ color: currentColors.textMuted }}>Update your password to keep your account secure.</p>
-
-            {message.text && !showPasswordForm && (
-              <div className={`p-3 rounded-md text-sm mb-4 max-w-md ${message.type === 'error' ? 'bg-red-500/10 text-red-500' : 'bg-green-500/10 text-green-500'}`}>{message.text}</div>
-            )}
 
             {!showPasswordForm ? (
               <button onClick={() => setShowPasswordForm(true)} className="px-6 py-2 rounded-lg font-medium transition-opacity" style={{ backgroundColor: currentColors.primary, color: '#ffffff' }}>Change Password</button>
@@ -241,10 +226,6 @@ const Settings = () => {
                     style={{ borderColor: currentColors.border, color: currentColors.text, outlineColor: currentColors.primary }}
                   />
                 </div>
-
-                {message.text && (
-                  <div className={`p-3 rounded-md text-sm ${message.type === 'error' ? 'bg-red-500/10 text-red-500' : 'bg-green-500/10 text-green-500'}`}>{message.text}</div>
-                )}
 
                 <div className="flex gap-3 mt-6 pt-2">
                   <button type="submit" disabled={isSubmitting || !otpSent} className="px-6 py-2 rounded-lg font-medium transition-opacity disabled:opacity-50 flex-1" style={{ backgroundColor: currentColors.primary, color: '#ffffff' }}>
