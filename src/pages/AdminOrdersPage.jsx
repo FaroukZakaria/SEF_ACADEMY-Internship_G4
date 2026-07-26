@@ -1,22 +1,32 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import api from "../api/axios";
 import OrderSkeleton from '../components/admin/OrderSkeleton';
 
 const statusBadgeClasses = {
-  pending: "bg-yellow-500/10 text-yellow-400 border border-yellow-500/20",
-  confirmed: "bg-blue-500/10 text-blue-400 border border-blue-500/20",
-  processing: "bg-purple-500/10 text-purple-400 border border-purple-500/20",
-  shipped: "bg-cyan-500/10 text-cyan-400 border border-cyan-500/20",
-  delivered: "bg-green-500/10 text-green-400 border border-green-500/20",
-  cancelled: "bg-red-500/10 text-red-400 border border-red-500/20",
-  returned: "bg-orange-500/10 text-orange-400 border border-orange-500/20",
+  pending: "bg-yellow-500/10 text-yellow-500 border border-yellow-500/20",
+  confirmed: "bg-blue-500/10 text-blue-500 border border-blue-500/20",
+  processing: "bg-purple-500/10 text-purple-500 border border-purple-500/20",
+  shipped: "bg-cyan-500/10 text-cyan-500 border border-cyan-500/20",
+  delivered: "bg-green-500/10 text-green-500 border border-green-500/20",
+  cancelled: "bg-red-500/10 text-red-500 border border-red-500/20",
+  returned: "bg-orange-500/10 text-orange-500 border border-orange-500/20",
 };
 
 const paymentBadgeClasses = {
-  pending: "bg-orange-500/10 text-orange-400 border border-orange-500/20",
-  paid: "bg-green-500/10 text-green-400 border border-green-500/20",
-  failed: "bg-red-500/10 text-red-400 border border-red-500/20",
-  refunded: "bg-purple-500/10 text-purple-400 border border-purple-500/20",
+  pending: "bg-orange-500/10 text-orange-500 border border-orange-500/20",
+  paid: "bg-green-500/10 text-green-500 border border-green-500/20",
+  failed: "bg-red-500/10 text-red-500 border border-red-500/20",
+  refunded: "bg-purple-500/10 text-purple-500 border border-purple-500/20",
+};
+
+const getImageUrl = (item) => {
+  const rawImg = item?.image || item?.img || item?.product?.image || item?.product?.imageUrl || item?.product?.img;
+  if (!rawImg) return '';
+  if (rawImg.startsWith('http://') || rawImg.startsWith('https://')) {
+    return rawImg;
+  }
+  const baseURL = api.defaults.baseURL ? api.defaults.baseURL.replace('/api', '') : '';
+  return `${baseURL}${rawImg.startsWith('/') ? '' : '/'}${rawImg}`;
 };
 
 export default function AdminOrdersPage() {
@@ -28,19 +38,15 @@ export default function AdminOrdersPage() {
   const [totalPages, setTotalPages] = useState(1);
   const [totalOrders, setTotalOrders] = useState(0);
   
-  const [searchId, setSearchId] = useState('');
-  const [debouncedSearch, setDebouncedSearch] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
   const [paymentFilter, setPaymentFilter] = useState('');
   const [methodFilter, setMethodFilter] = useState('all');
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setDebouncedSearch(searchId);
-      setPage(1);
-    }, 500);
-    return () => clearTimeout(timer);
-  }, [searchId]);
+  const [selectedOrder, setSelectedOrder] = useState(null);
+  const [newStatus, setNewStatus] = useState('');
+  const [adminNote, setAdminNote] = useState('');
+  const [updating, setUpdating] = useState(false);
 
   const fetchOrders = useCallback(async () => {
     try {
@@ -49,33 +55,18 @@ export default function AdminOrdersPage() {
       
       const params = {
         page,
-        limit: 10,
+        limit: 20,
         sortDir: 'desc'
       };
       
       if (statusFilter) params.status = statusFilter;
       if (paymentFilter) params.paymentStatus = paymentFilter;
+      if (methodFilter !== 'all') params.paymentMethod = methodFilter;
 
       const response = await api.get('/orders/admin', { params });
       const data = response.data;
-      let fetchedOrders = data.orders || [];
       
-      if (debouncedSearch.trim()) {
-        const cleanSearch = debouncedSearch.trim().replace('#', '').toLowerCase();
-        fetchedOrders = fetchedOrders.filter(order => {
-          const fullId = order._id.toLowerCase();
-          const shortId = order._id.slice(-8).toLowerCase();
-          return fullId.includes(cleanSearch) || shortId.includes(cleanSearch);
-        });
-      }
-
-      if (methodFilter !== 'all') {
-        fetchedOrders = fetchedOrders.filter(order => 
-          order.paymentMethod?.toLowerCase() === methodFilter.toLowerCase()
-        );
-      }
-
-      setOrders(fetchedOrders);
+      setOrders(data.orders || []);
       setTotalPages(data.totalPages || 1);
       setTotalOrders(data.total || 0);
     } catch (err) {
@@ -83,14 +74,42 @@ export default function AdminOrdersPage() {
     } finally {
       setLoading(false);
     }
-  }, [page, statusFilter, paymentFilter, debouncedSearch, methodFilter]);
+  }, [page, statusFilter, paymentFilter, methodFilter]);
 
   useEffect(() => {
     fetchOrders();
   }, [fetchOrders]);
+  const filteredOrders = useMemo(() => {
+    if (!searchQuery.trim()) return orders;
+    const query = searchQuery.toLowerCase().trim();
+    return orders.filter((order) => {
+      const orderId = order._id?.toLowerCase() || '';
+      const customerName = order.shippingAddress?.fullName?.toLowerCase() || '';
+      const customerEmail = order.user?.email?.toLowerCase() || order.email?.toLowerCase() || '';
+      
+      return orderId.includes(query) || customerName.includes(query) || customerEmail.includes(query);
+    });
+  }, [orders, searchQuery]);
+
+  const handleUpdateStatus = async () => {
+    if (!selectedOrder) return;
+    try {
+      setUpdating(true);
+      await api.patch(`/orders/admin/${selectedOrder._id}/status`, {
+        status: newStatus,
+        adminNote: adminNote
+      });
+      await fetchOrders();
+      setSelectedOrder(prev => ({ ...prev, status: newStatus, adminNote: adminNote }));
+      setUpdating(false);
+    } catch (err) {
+      alert(err.response?.data?.message || 'Failed to update order status');
+      setUpdating(false);
+    }
+  };
 
   return (
-    <div className="p-6 bg-amazon-bg min-h-screen font-sans">
+    <div className="p-6 bg-amazon-bg min-h-screen font-sans relative">
     
       <div className="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
         <div>
@@ -113,9 +132,9 @@ export default function AdminOrdersPage() {
           </span>
           <input
             type="text"
-            placeholder="Search Order ID..."
-            value={searchId}
-            onChange={(e) => setSearchId(e.target.value)}
+            placeholder="Search by ID, name, email..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full bg-amazon-surface border border-amazon-border rounded-xl pl-11 pr-4 py-3 text-sm text-amazon-textDark placeholder-amazon-textLight focus:outline-none focus:border-amazon-orange transition-colors"
           />
         </div>
@@ -149,7 +168,7 @@ export default function AdminOrdersPage() {
 
         <select
           value={methodFilter}
-          onChange={(e) => setMethodFilter(e.target.value)}
+          onChange={(e) => { setMethodFilter(e.target.value); setPage(1); }}
           className="bg-amazon-surface border border-amazon-border rounded-xl px-4 py-3 text-sm text-amazon-textDark focus:outline-none focus:border-amazon-orange transition-colors"
         >
           <option value="all">All methods</option>
@@ -178,7 +197,7 @@ export default function AdminOrdersPage() {
           </div>
         )}
 
-        {!loading && !error && orders.length === 0 && (
+        {!loading && !error && filteredOrders.length === 0 && (
           <div className="p-16 text-center space-y-3">
             <div className="w-16 h-16 bg-amazon-lightNavy/50 rounded-full flex items-center justify-center mx-auto text-amazon-textLight">
               <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -190,7 +209,7 @@ export default function AdminOrdersPage() {
           </div>
         )}
 
-        {!loading && !error && orders.length > 0 && (
+        {!loading && !error && filteredOrders.length > 0 && (
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse min-w-[700px]">
               <thead>
@@ -204,7 +223,7 @@ export default function AdminOrdersPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-amazon-border text-sm">
-                {orders.map((order) => {
+                {filteredOrders.map((order) => {
                   const customerName = order.shippingAddress?.fullName || '---';
                   const initialLetter = customerName !== '---' ? customerName.charAt(0).toUpperCase() : 'U';
                   const formattedDate = new Date(order.createdAt).toLocaleDateString('en-GB', {
@@ -214,7 +233,15 @@ export default function AdminOrdersPage() {
                   });
 
                   return (
-                    <tr key={order._id} className="hover:bg-amazon-lightNavy/35 transition-colors">
+                    <tr 
+                      key={order._id} 
+                      onClick={() => {
+                        setSelectedOrder(order);
+                        setNewStatus(order.status);
+                        setAdminNote(order.adminNote || '');
+                      }}
+                      className="hover:bg-amazon-lightNavy/35 transition-colors cursor-pointer"
+                    >
                       <td className="py-4 px-6 font-medium text-amazon-orange whitespace-nowrap">
                         #{order._id.slice(-8).toUpperCase()}
                       </td>
@@ -223,7 +250,10 @@ export default function AdminOrdersPage() {
                           <div className="w-8 h-8 rounded-full bg-amazon-lightNavy flex items-center justify-center font-bold text-xs text-amazon-textLight">
                             {initialLetter}
                           </div>
-                          <span className="text-amazon-textDark font-medium">{customerName}</span>
+                          <div>
+                            <div className="text-amazon-textDark font-medium">{customerName}</div>
+                            <div className="text-xs text-amazon-textLight">{order.user?.email || order.email || ''}</div>
+                          </div>
                         </div>
                       </td>
                       <td className="py-4 px-6 text-amazon-textLight whitespace-nowrap">
@@ -298,6 +328,161 @@ export default function AdminOrdersPage() {
         )}
 
       </div>
+
+      {selectedOrder && (
+        <div className="fixed inset-0 z-50 overflow-hidden bg-black/60 backdrop-blur-sm flex justify-end">
+          <div className="w-full max-w-lg bg-amazon-surface h-full shadow-2xl p-6 overflow-y-auto flex flex-col justify-between border-l border-amazon-border text-amazon-textDark">
+            <div>
+              <div className="flex items-center justify-between pb-4 border-b border-amazon-border mb-6">
+                <div>
+                  <span className="text-xs text-amazon-textLight uppercase tracking-wider">Order Detail</span>
+                  <h2 className="text-xl font-bold text-amazon-orange">#{selectedOrder._id.slice(-8).toUpperCase()}</h2>
+                </div>
+                <button 
+                  onClick={() => setSelectedOrder(null)}
+                  className="w-8 h-8 rounded-full bg-amazon-lightNavy/30 flex items-center justify-center text-amazon-textLight hover:text-amazon-textDark"
+                >
+                  ✕
+                </button>
+              </div>
+              <div className="flex items-center justify-between mb-6">
+                <div className="flex gap-2">
+                  <span className={`px-3 py-1 rounded-full text-xs font-semibold capitalize ${statusBadgeClasses[selectedOrder.status]}`}>
+                    ● {selectedOrder.status}
+                  </span>
+                  <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase ${paymentBadgeClasses[selectedOrder.paymentStatus]}`}>
+                    {selectedOrder.paymentStatus}
+                  </span>
+                </div>
+                <span className="text-sm font-medium text-amazon-textLight capitalize">{selectedOrder.paymentMethod}</span>
+              </div>
+              <div className="bg-amazon-lightNavy/10 p-4 rounded-2xl space-y-3 text-sm border border-amazon-border mb-6">
+                <div className="flex justify-between border-b border-amazon-border/60 pb-2">
+                  <span className="text-amazon-textLight">Placed</span> 
+                  <span className="font-medium text-amazon-textDark">{new Date(selectedOrder.createdAt).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}</span>
+                </div>
+                <div className="flex justify-between border-b border-amazon-border/60 pb-2">
+                  <span className="text-amazon-textLight">Customer</span> 
+                  <span className="font-medium text-amazon-textDark">{selectedOrder.shippingAddress?.fullName || '---'}</span>
+                </div>
+                <div className="flex justify-between border-b border-amazon-border/60 pb-2">
+                  <span className="text-amazon-textLight">Email</span> 
+                  <span className="font-medium text-amazon-textDark">{selectedOrder.user?.email || selectedOrder.email || '---'}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-amazon-textLight">Ship to</span> 
+                  <span className="font-medium text-amazon-textDark">{selectedOrder.shippingAddress?.city}, {selectedOrder.shippingAddress?.country}</span>
+                </div>
+              </div>
+
+              <div className="mb-6">
+                <h4 className="text-xs uppercase tracking-wider text-amazon-textLight font-semibold mb-3">Items</h4>
+                <div className="space-y-3">
+                  {selectedOrder.items?.map((item, idx) => {
+                    const itemName = item.name || 'Product';
+                    const itemImg = getImageUrl(item);
+                    const itemPrice = item.price || 0;
+                    const itemQty = item.quantity || 1;
+                    
+                    return (
+                      <div key={idx} className="flex justify-between items-center bg-amazon-lightNavy/10 p-3.5 rounded-2xl border border-amazon-border">
+                        <div className="flex items-center space-x-3">
+                          {itemImg ? (
+                            <img 
+                              src={itemImg} 
+                              alt={itemName} 
+                              className="w-12 h-12 object-cover rounded-xl border border-amazon-border bg-amazon-surface" 
+                              onError={(e) => { e.target.style.display = 'none'; }}
+                            />
+                          ) : (
+                            <div className="w-12 h-12 bg-amazon-lightNavy/40 rounded-xl border border-amazon-border flex items-center justify-center text-xs text-amazon-textLight">
+                              No Img
+                            </div>
+                          )}
+                          <div>
+                            <div className="text-sm font-semibold text-amazon-textDark">{itemName}</div>
+                            <div className="text-xs text-amazon-textLight">× {itemQty} · {itemPrice.toFixed(2)} EGP</div>
+                          </div>
+                        </div>
+                        <div className="text-sm font-bold text-amazon-textDark">{(itemPrice * itemQty).toFixed(2)} EGP</div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              
+              <div className="bg-amazon-lightNavy/10 p-4 rounded-2xl border border-amazon-border space-y-3 text-sm mb-6">
+                <div className="flex justify-between text-amazon-textLight">
+                  <span>Subtotal</span>
+                  <span className="text-amazon-textDark">{(selectedOrder.subtotal || selectedOrder.totalPrice).toFixed(2)} EGP</span>
+                </div>
+                <div className="flex justify-between text-amazon-textLight">
+                  <span>Shipping</span>
+                  <span className="text-amazon-textDark">{(selectedOrder.shippingFee || 0).toFixed(2)} EGP</span>
+                </div>
+                {selectedOrder.tax > 0 && (
+                  <div className="flex justify-between text-amazon-textLight">
+                    <span>Tax (14%)</span>
+                    <span className="text-amazon-textDark">{selectedOrder.tax.toFixed(2)} EGP</span>
+                  </div>
+                )}
+                {selectedOrder.discount > 0 && (
+                  <div className="flex justify-between text-amazon-textLight">
+                    <span>Discount</span>
+                    <span className="text-destructive">-{selectedOrder.discount.toFixed(2)} EGP</span>
+                  </div>
+                )}
+                <div className="flex justify-between font-bold text-base text-amazon-textDark border-t border-amazon-border pt-3">
+                  <span>Total</span>
+                  <span>{selectedOrder.totalPrice.toFixed(2)} EGP</span>
+                </div>
+              </div>
+
+              {selectedOrder.customerNote ? (
+                <div className="mb-6">
+                  <h4 className="text-xs uppercase tracking-wider text-amazon-textLight font-semibold mb-2">Customer Note</h4>
+                  <div className="bg-amazon-lightNavy/10 p-3.5 rounded-2xl border border-amazon-border text-sm text-amazon-textLight italic">
+                    "{selectedOrder.customerNote}"
+                  </div>
+                </div>
+              ) : null}
+              <div className="space-y-3 mb-6">
+                <h4 className="text-xs uppercase tracking-wider text-amazon-textLight font-semibold">Update Status</h4>
+                <select
+                  value={newStatus}
+                  onChange={(e) => setNewStatus(e.target.value)}
+                  className="w-full bg-amazon-surface border border-amazon-border rounded-xl px-4 py-3 text-sm text-amazon-textDark focus:outline-none focus:border-amazon-orange"
+                >
+                  <option value="pending">Pending</option>
+                  <option value="confirmed">Confirmed</option>
+                  <option value="processing">Processing</option>
+                  <option value="shipped">Shipped</option>
+                  <option value="delivered">Delivered</option>
+                  <option value="cancelled">Cancelled</option>
+                  <option value="returned">Returned</option>
+                </select>
+                <textarea
+                  placeholder="Admin note (optional)..."
+                  value={adminNote}
+                  onChange={(e) => setAdminNote(e.target.value)}
+                  rows="2"
+                  className="w-full bg-amazon-surface border border-amazon-border rounded-xl px-4 py-3 text-sm text-amazon-textDark placeholder-amazon-textLight focus:outline-none focus:border-amazon-orange resize-none"
+                />
+              </div>
+            </div>
+            <div className="pt-4 border-t border-amazon-border">
+              <button 
+                onClick={handleUpdateStatus}
+                disabled={updating}
+                className="w-full py-3.5 bg-amazon-orange hover:bg-amazon-orangeHover text-amazon-navy font-bold rounded-2xl transition-all shadow-lg disabled:opacity-50"
+              >
+                {updating ? 'Saving...' : 'Save changes'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
     </div>
   );
